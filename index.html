@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    
+    <head>
+        <title>Quizi</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="lib/jquery-1.6.4.js"></script>
+        <script src="lib/jquery.mobile-1.1.0.js"></script>
+        <link href="src/css/jquery.mobile.structure-1.1.0.css" rel="stylesheet"/>
+        <link href="src/css/jquery.mobile.theme-1.1.0.css" rel="stylesheet" />
+		<style>
+		audio { 
+			display:none;
+		}
+		.gambar {
+			width:40%;
+			height:40%;
+		}
+		.gambarh {
+			height:40%;
+		}
+		.jawaban {
+			height : 20px;
+		}
+		.belum {
+			display : none;
+		}
+		span{
+			background-color:#FFF;
+		}
+		</style>
+    </head>
+    <script type="text/javascript">
+
+			//Atur Jumlah pertanyaan
+			var numQuest=5
+			var ie=document.all
+			var sk = new Array();
+			var hehe = new Array();
+			var nilai = 0;
+			var level1,level2,level3,level4,level5,leveltotal,scoreakhir;
+			
+			function reset(){
+				enabler("q1");enabler("q2");enabler("q3");enabler("q4");enabler("q5");
+				document.getElementById("j1").className = "jawaban belum";
+				document.getElementById("j2").className = "jawaban belum";
+				document.getElementById("j3").className = "jawaban belum";
+				document.getElementById("j4").className = "jawaban belum";
+				document.getElementById("j5").className = "jawaban belum";
+				enabler("q6");enabler("q7");enabler("q8");enabler("q9");enabler("q10");
+				document.getElementById("j7").className = "jawaban belum";
+				document.getElementById("j8").className = "jawaban belum";
+				document.getElementById("j9").className = "jawaban belum";
+				document.getElementById("j10").className = "jawaban belum";
+				document.getElementById("j11").className = "jawaban belum";
+				enabler("q11");enabler("q12");enabler("q13");enabler("q14");enabler("q15");
+				document.getElementById("j11").className = "jawaban belum";
+				document.getElementById("j12").className = "jawaban belum";
+				document.getElementById("j13").className = "jawaban belum";
+				document.getElementById("j14").className = "jawaban belum";
+				document.getElementById("j15").className = "jawaban belum";
+				enabler("q16");enabler("q17");enabler("q18");enabler("q19");enabler("q20");
+				document.getElementById("j16").className = "jawaban belum";
+				document.getElementById("j17").className = "jawaban belum";
+				document.getElementById("j18").className = "jawaban belum";
+				document.getElementById("j19").className = "jawaban belum";
+				document.getElementById("j20").className = "jawaban belum";
+				enabler("q21");enabler("q22");enabler("q23");enabler("q24");enabler("q25");
+				document.getElementById("j21").className = "jawaban belum";
+				document.getElementById("j22").className = "jawaban belum";
+				document.getElementById("j23").className = "jawaban belum";
+				document.getElementById("j24").className = "jawaban belum";
+				document.getElementById("j25").className = "jawaban belum";
+				ie? ie.results.innerHTML=statement : document.getElementById('results1').innerHTML="Skip";
+				ie? ie.results.innerHTML=statement : document.getElementById('results2').innerHTML="Skip";
+				ie? ie.results.innerHTML=statement : document.getElementById('results3').innerHTML="Skip";
+				ie? ie.results.innerHTML=statement : document.getElementById('results4').innerHTML="Skip";
+				ie? ie.results.innerHTML=statement : document.getElementById('results5').innerHTML="Skip";
+			}
+			
+			function hasilnya(tingkat,score){
+				if (tingkat == 1){
+					ie? ie.results.innerHTML=statement : document.getElementById('level1').innerHTML=score
+					level1=score;
+				}
+				else if(tingkat == 6){
+					ie? ie.results.innerHTML=statement : document.getElementById('level2').innerHTML=score
+					level2=score;
+				}
+				else if(tingkat == 11){
+					ie? ie.results.innerHTML=statement : document.getElementById('level3').innerHTML=score
+					level3=score;
+				}
+				else if(tingkat == 16){
+					ie? ie.results.innerHTML=statement : document.getElementById('level4').innerHTML=score
+					level4=score;
+				}
+				else if(tingkat == 21){
+					ie? ie.results.innerHTML=statement : document.getElementById('level5').innerHTML=score
+					level5=score;
+				}
+				leveltotal = level1+level2+level3+level4+level5;
+				scoreakhir = leveltotal / 5;
+				ie? ie.results.innerHTML=statement : document.getElementById('leveltotal').innerHTML=leveltotal
+				ie? ie.results.innerHTML=statement : document.getElementById('scoreakhir').innerHTML=scoreakhir
+			}
+			function disabler(xe) {
+				var x = document.getElementsByName(xe);
+				var i;
+				for (i = 0; i < x.length; i++) {
+					if (x[i].type == "radio") {
+						x[i].disabled = true;
+					}
+				}
+			}
+			function enabler(xe) {
+				var x = document.getElementsByName(xe);
+				var i;
+				for (i = 0; i < x.length; i++) {
+					if (x[i].type == "radio") {
+						x[i].disabled = false;
+					}
+				}
+			}
+			function addup(kuis){
+				var q, right, statement, total=0,ele,nama
+				questions=new Array();
+				for (i = kuis-1; i < kuis+numQuest; i++)
+					questions[i]=0
+				
+				//level
+				if(kuis==1){
+				ele = document.forms.quiz1.q1['right1']
+					// baris gae nge disable jawaban pas nge submit, ambe ngetokno jawaban sing bener
+					disabler("q1");disabler("q2");disabler("q3");disabler("q4");disabler("q5");
+					document.getElementById("j1").className = "jawaban";
+					document.getElementById("j2").className = "jawaban";
+					document.getElementById("j3").className = "jawaban";
+					document.getElementById("j4").className = "jawaban";
+					document.getElementById("j5").className = "jawaban";
+				}else if(kuis ==6){
+				ele = document.forms.quiz2.q6['right6']
+					// baris gae nge disable jawaban pas nge submit, ambe ngetokno jawaban sing bener
+					disabler("q6");disabler("q7");disabler("q8");disabler("q9");disabler("q10");
+					document.getElementById("j7").className = "jawaban";
+					document.getElementById("j8").className = "jawaban";
+					document.getElementById("j9").className = "jawaban";
+					document.getElementById("j10").className = "jawaban";
+					document.getElementById("j11").className = "jawaban";
+				}else if(kuis == 11){
+				ele = document.forms.quiz4.q16['right11']
+					// baris gae nge disable jawaban pas nge submit, ambe ngetokno jawaban sing bener
+					disabler("q11");disabler("q12");disabler("q13");disabler("q14");disabler("q15");
+					document.getElementById("j11").className = "jawaban";
+					document.getElementById("j12").className = "jawaban";
+					document.getElementById("j13").className = "jawaban";
+					document.getElementById("j14").className = "jawaban";
+					document.getElementById("j15").className = "jawaban";
+				}else if(kuis == 16){
+				ele = document.forms.quiz4.q16['right16']
+					// baris gae nge disable jawaban pas nge submit, ambe ngetokno jawaban sing bener
+					disabler("q16");disabler("q17");disabler("q18");disabler("q19");disabler("q20");
+					document.getElementById("j16").className = "jawaban";
+					document.getElementById("j17").className = "jawaban";
+					document.getElementById("j18").className = "jawaban";
+					document.getElementById("j19").className = "jawaban";
+					document.getElementById("j20").className = "jawaban";
+				}else if(kuis == 21){
+				ele = document.forms.quiz4.q16['right21']
+					// baris gae nge disable jawaban pas nge submit, ambe ngetokno jawaban sing bener
+					disabler("q21");disabler("q22");disabler("q23");disabler("q24");disabler("q25");
+					document.getElementById("j21").className = "jawaban";
+					document.getElementById("j22").className = "jawaban";
+					document.getElementById("j23").className = "jawaban";
+					document.getElementById("j24").className = "jawaban";
+					document.getElementById("j25").className = "jawaban";
+				}
+				if (ele){
+					for (i = kuis-1; i < kuis+numQuest-1; i++){
+						q="q"+(i+1)
+						right="right"+(i+1)
+						if (document.forms.quiz[q][right].checked)
+							questions[i]=1
+					}
+				}
+				else if (document.getElementById){
+					for (i = kuis-1; i < kuis+numQuest-1; i++){
+						right="right"+(i+1)
+						if (document.getElementById(right).checked)
+						questions[i]=1
+					}
+				}
+				else
+					return;
+				for (i = kuis-1; i < numQuest+kuis-1; i++)
+					total += questions[i]
+
+				statement='Benar '+ total  +' ,Score : '+ '<font color = red>'+Math.round(total/numQuest*100) +'</font>%'+' Next'
+				ie? ie.results.innerHTML=statement : document.getElementById('results'+kuis).innerHTML=statement
+				nilai = Math.round(total/numQuest*100)
+				hasilnya(kuis,nilai);
+				if(kuis==21){
+					hasilnya();
+				}
+			}
+			function clearR(){
+				ie? ie.results.innerHTML='' : document.getElementById('results').innerHTML=''
+				for (i = 0; i < numQuest; i++)
+					ie? ie["ans"+(i+1)].innerHTML='' : document.getElementById("ans"+(i+1)).innerHTML=''
+			}
+			</script>
+    <body>
+        <div data-role="page" id="pgSplash" data-theme="c" style="background-image: url('images/anaksehat.jpg'); background-attachment: fixed;">
+            <div data-role="header" data-theme="c">
+                <h1>Quizi</h1>
+            </div>
+            <div data-role="content">
+                <img class="gambar" src="images/quizi.png" style="display: block; margin: 0 auto" />
+            </div>
+            <div data-role="footer" data-position="fixed" data-theme="c">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" id="btnMasuk" href="#pgQuiz1">Mulai</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-role="page" id="pgResult">
+            <div data-role="header">
+                <h1>Hasil</h1>
+            </div>
+            <div data-role="content">
+                <br><div class="div-widget">
+                    <div data-role="collapsible-set">
+					<center><h3>Total Score</h3>
+					<table data-role="table" border="1" widtf="80%" cellpadding="5">
+						<tr>
+							<td>Level</td>
+							<td>Score</td>
+						</tr>
+						<tr>
+							<td><span>1</span></td>
+							<td><span id="level1"></span></td>
+						</td>
+						<tr>
+							<td><span>2</span></td>
+							<td><span id="level2"></span></td>
+						</td>
+						<tr>
+							<td><span>3</span></td>
+							<td><span id="level3"></span></td>
+						</td>
+						<tr>
+							<td><span>4</span></td>
+							<td><span id="level4"></span></td>
+						</td>
+						<tr>
+							<td><span>5</span></td>
+							<td><span id="level5"></span></td>
+						</tr>
+						<tr>
+							<td><span>Total</span></td>
+							<td><span id="leveltotal"></span></td>
+						</tr>
+					</table>
+					<h2>Score Akhirmu : <span id="scoreakhir"></span></h2>
+					</center>
+					
+					</div>
+                </div>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#pgQuiz1" onclick="reset()" data-theme="c">Ulang Quiz</a>
+                        </li>
+                        <li>
+                            <a data-role="button" data-theme="c">Selesai</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-role="page" id="pgQuiz1"  style="background-image: url('images/anaksehat.jpg'); background-attachment: fixed;">
+            <div data-role="header">
+                <h1>Level 1</h1>
+            </div>
+            <div data-role="content">
+			<form name="quiz1">
+                <br><div class="div-widget">
+                    <span>1. Kelompok bahan makanan sumber karbohidrat adalah...</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w1a" name="q1" />
+                        <label for="w1a"><img class="gambar" src="images/q1t1a.jpg"></label>
+                        <input type="radio" id="right1" name="q1" />
+                        <label for="right1"><img class="gambar" src="images/q1t1b.jpg"><img id="j1" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w1b" name="q1" />
+                        <label for="w1b"><img class="gambar" src="images/q1t1c.jpg"></label>
+                        <input type="radio" id="w1c" name="q1"/>
+                        <label for="w1c"><img class="gambar" src="images/q1t1d.jpg"></label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>2. Makanan yang dikatakan baik apabila...</span>
+                    <fieldset
+                    data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w2a" name="q2" />
+                        <label for="w2a">4 sehat 5 sempurna</label>
+                        <input type="radio" id="right2" name="q2"/>
+                        <label for="right2">Gizi seimbang<img id="j2" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w2b" name="q2"/>
+                        <label for="w2b">Karbohidrat tinggi protein sedang</label>
+                        <input type="radio" id="w2c" name="q2"/>
+                        <label for="w2c">Protein tinggi karbohidrat sedang</label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>3. Kelompok bahan makanan sumber protein adalah</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w3a" name="q3" />
+                        <label for="w3a"><img class="gambar" src="images/q1t3a.jpg"></label>
+                        <input type="radio" id="right3" name="q3"/>
+                        <label for="right3"><img class="gambar" src="images/q1t3b.jpg"><img id="j3" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w3b" name="q3" />
+                        <label for="w3b"><img class="gambar" src="images/q1t3c.jpg"></label>
+                        <input type="radio" id="w3c" name="q3" />
+                        <label for="w3c"><img class="gambar" src="images/q1t3d.jpg"></label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>4. Kelompok bahan makanan sumber vitamin adalah</span>
+                    <fieldset
+                    data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w4a" name="q4" />
+                        <label for="w4a"><img class="gambar" src="images/q1t4a.jpg"></label>
+                        <input type="radio" id="w4b" name="q4" />
+                        <label for="w4b"><img class="gambar" src="images/q1t4b.jpg"></label>
+                        <input type="radio" id="w4c" name="q4" />
+                        <label for="w4c"><img class="gambar" src="images/q1t4c.jpg"></label>
+                        <input type="radio" id="right4" name="q4" />
+                        <label for="right4"><img class="gambar" src="images/q1t4d.jpg"><img id="j4" class="jawaban belum"src="images/check.ico"></label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>5. Makanan tidak aman atau tidak sehat apabila mengandung</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w5a" name="q5" />
+                        <label for="w5a">Bahaya mikroba, bahaya kimia, bahaya fisik</label>
+                        <input type="radio" id="w5b" name="q5" />
+                        <label for="w5b">Bahaya bakteri, bahaya biologis, bahaya kimia</label>
+                        <input type="radio" id="right5" name="q5"/>
+                        <label for="right5">Bahaya fisik, bahaya biologis, bahaya kimia<img id="j5" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w5c" name="q5"/>
+                        <label for="w5c">Bahaya mikroba, bahaya bakteri, bahaya biologis</label>
+                    </fieldset>
+                </div>
+			</form>
+            </div>
+			
+			<input type="button" id="submit1" value="Lihat Score" onclick="addup(1)">	
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#pgSplash" data-transition="slidedown" data-theme="c">Kembali</a>
+                        </li>
+                        <li>
+                            <a data-role="button" href="#pgQuiz2"  onclick="addup(1)" data-transition="slideup" data-theme="c" ><span id="results1">Skip</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<div data-role="page" id="pgQuiz2" style="background-image: url('images/develop.gif'); background-attachment: fixed;">
+            <div data-role="header">
+                <h1>Level 2</h1>
+            </div>
+            <div data-role="content">
+			<form name="quiz2">
+                <br><div class="div-widget">
+                    <span>1. Sayur ini akan lebih bergizi apabila di masak ,tidak seperti banyak sayuran
+                        lainya. Sayuran ini banyak mengandung karoten, antioksodan yang memberikan warna
+                        orange pada sayur ini..</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w6a" name="q6" />
+                        <label for="w6a">Bayam</label>
+                        <input type="radio" id="w6b" name="q6" />
+                        <label for="w6b">Brokoli</label>
+                        <input type="radio" id="w6c" name="q6" />
+                        <label for="w6c">Alpukat</label>
+                        <input type="radio" id="right6" name="q6"/>
+                        <label for="right6">Wortel<img id="j6" class="jawaban belum"src="images/check.ico"></label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>2. Sayuran dan buah buahan mengandung zat gizi yang bermanfaat untuk....</span>
+                    <fieldset
+                    data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w7a" name="q7" />
+                        <label for="w7a">Menghasilkan tenaga</label>
+                        <input type="radio" id="w7b" name="q7" />
+                        <label for="w7b">Menyediakan makanan cadangan</label>
+                        <input type="radio" id="right7" name="q7"/>
+                        <label for="right7">Melindungi tubuh dari penyakit<img id="j7" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w7c" name="q7"/>
+                        <label for="w7c">Mengganti sel sel tubuh yang rusak</label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>3. Sayur dengan kandungan fe paling tinggi adalah ....</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="right8" name="q8"/>
+                        <label for="right8">Bayam<img id="j8"class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w8a" name="q8" />
+                        <label for="w8a">Kelor</label>
+                        <input type="radio" id="w8b" name="q8" />
+                        <label for="w8b">Brokoli</label>
+                        <input type="radio" id="w8c" name="q8" />
+                        <label for="w8c">Sawi</label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>4. Buah yang menggantikan sel darah merah sebagai metabolisme tubuh adalah....</span>
+                    <fieldset
+                    data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w9a" name="q9" />
+                        <label for="w9a">Tomat</label>
+                        <input type="radio" id="w9b" name="q9" />
+                        <label for="w9b">Wortel</label>
+                        <input type="radio" id="right9" name="q9"  />
+                        <label for="right9">Air Kelapa<img id="j9" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w9c" name="q9" />
+                        <label for="w9c">Raspberry</label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>5. Dalam buah-buah an banyak terkandung vitamin. Beberapa mengandung vitamin yg
+                        baik untuk kesehatan mata...</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="right10" name="q10" />
+                        <label for="right10">Wortel<img id="j10" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w10a" name="q10" />
+                        <label for="w10a">Alpukat</label>
+                        <input type="radio" id="w10b" name="q10" />
+                        <label for="w10b">Apel</label>
+                        <input type="radio" id="w10c" name="q10" />
+                        <label for="w10c">Jeruk</label>
+                    </fieldset>
+                </div>
+			</form>
+            </div>
+			<input type="button" id="submit2" value="Lihat Score" onclick="addup(6)">
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#pgQuiz1" data-transition="slidedown" data-theme="c">Kembali</a>
+                        </li>
+                        <li>
+                            <a data-role="button" href="#pgQuiz3" onclick="addup(6)" data-transition="slideup" data-theme="c"><span id='results6'>Skip</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-role="page" id="pgQuiz3" style="background-image: url('images/bayisehat.jpeg'); background-attachment: fixed;">
+            <div data-role="header">
+                <h1>Level 3</h1>
+            </div>
+            <div data-role="content">
+			<form name ="quiz3">
+                <br><div class="div-widget">
+                    <span>1. Ada 5 program prioritas PHBS diantaranya adalah?</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="right11" name="q11" />
+                        <label for="right11">KIA, Gizi, Kesehatan Lingkungan, Gaya Hidup, Asuransi Kesehatan<img id="j11" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w11a" name="q11" />
+                        <label for="w11a">Air bersih, ASI Eksklusif, Cuci tangan, Jamban sehat, Tidak merokok</label>
+                        <input type="radio" id="w11b" name="q11" />
+                        <label for="w11b">Menimbang balita, Aktifitas fisik, Memberantas jentik, Air bersih, ASI Eksklusif</label>
+                        <input type="radio" id="w11c" name="q11" />
+                        <label for="w11c">KIA, Gizi, Kesehatan Lingkungan, ASI Eksklusif, Cuci tangan</label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>2. Berikut indikator PHBS yang benar adalah?</span>
+                    <fieldset
+                    data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w12a" name="q12" />
+                        <label for="w12a">Memberi bayi ASI Eksklusif</label>
+                        <input type="radio" id="w12b" name="q12" />
+                        <label for="w12b">Mencuci tangan dengan air bersih dan sabun</label>
+                        <input type="radio" id="w12c" name="q12" />
+                        <label for="w12c">Makan sayur dan buah setiap hari</label>
+                        <input type="radio" id="right12" name="q12" />
+                        <label for="right12">A, B, C benar semua<img id="j12" class="jawaban belum"src="images/check.ico"></label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>3. Berikut syarat memiliki jamban sehat adalah…</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w13a" name="q13" />
+                        <label for="w13a">Jarak sumber air minum dengan lubang penampungan minimum 10 m.</label>
+                        <input type="radio" id="w13b" name="q13" />
+                        <label for="w13b">Tidak mencemari tanah disekitarnya</label>
+                        <input type="radio" id="w13c" name="q13" />
+                        <label for="w13c">Dapat dijamah oleh serangga dan tikus</label>
+                        <input type="radio" id="right13" name="q13"/>
+                        <label for="right13">A, B benar semua<img id="j13" class="jawaban belum"src="images/check.ico"></label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+					<span>4. Perhatikan gambar-gambar berikut</span>
+					<table>
+						<tr>
+							<td valign="top"><span><h3>1.</h3></span></td>
+							<td><img class="gambarh" src="images/q3t4a.png"></td>
+							<td valign="top"><span><h3>2.</h3></span></td>
+							<td><img class="gambarh" src="images/q3t4b.png"></td>
+							<td valign="top"><span><h3>3.</h3></span></td>
+							<td><img class="gambarh" src="images/q3t4c.png"></td>
+						</tr>
+						<tr>
+							<td valign="top"><span><h3>4.</h3></span></td>
+							<td><img class="gambarh" src="images/q3t4d.png"></td>
+							<td valign="top"><span><h3>5.</h3></span></td>
+							<td><img class="gambarh" src="images/q3t4e.png"></td>
+							<td valign="top"><span><h3>6.</h3></span></td>
+							<td><img class="gambarh" src="images/q3t4f.png"></td>
+						</tr>
+					</table>
+                    <span>Urutkan langkah-langkah mencuci tangan yang baik dan benar sesuai gambar diatas.. </span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w14a" name="q14" />
+                        <label for="w14a">6-5-4-3-2-1</label>
+                        <input type="radio" id="w14b" name="q14" />
+                        <label for="w14b">4-3-2-1-5-6</label>
+                        <input type="radio" id="right14" name="q14" />
+                        <label for="right14">1-2-3-4-5-6<img id="j14" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w14c" name="q14" />
+                        <label for="w14c">5-4-3-2-1-6</label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>5. Berikut merupakan salah satu contoh aktifitas fisik adalah…</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w15a" name="q15" />
+                        <label for="w15a"><img class="gambar" src="images/q3t5a.jpg"></label>
+                        <input type="radio" id="w15b" name="q15" />
+                        <label for="w15b"><img class="gambar" src="images/q3t5b.png"><img id="j15" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w15c" name="q15" />
+                        <label for="w15c"><img class="gambar" src="images/q3t5c.jpg"></label>
+                        <input type="radio" id="right15" name="q15"  />
+                        <label for="right15"><img class="gambar" src="images/q3t5d.jpg"></label>
+                    </fieldset>
+                </div>
+				</form>
+            </div>
+			<input type="button" id="submit3" value="Lihat Score" onclick="addup(11)">
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#pgQuiz2" data-transition="slidedown" data-theme="c">Kembali</a>
+                        </li>
+                        <li>
+                            <a data-role="button" href="#pgQuiz4" onclick="addup(11)" data-transition="slideup" data-theme="c"><span id="results11">Skip</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-role="page" id="pgQuiz4" style="background-image: url('images/marasmus.jpg'); background-attachment: fixed;">
+            <div data-role="header">
+                <h1>Level 4</h1>
+            </div>
+            <div data-role="content">
+                <br><div class="div-widget">
+				<form name="quiz4">
+                    <span>1. Apa yang dimaksud dengan 1000 Hari Pertama Kehidupan?</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="right16" name="q16"/>
+                        <label for="right16">masa sejak anak dalam kandungan hingga berumur 2 tahun<img id="j16" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w16a" name="q16" />
+                        <label for="w16a">masa sejak lahir hingga berumur 2 tahun</label>
+                        <input type="radio" id="w16b" name="q16" />
+                        <label for="w16b">masa sejak anak berusia 1 bulan hingga 2 tahun</label>
+                        <input type="radio" id="w16c" name="q16"  />
+                        <label for="w16c">masa sejak anak berusia 1 bulan hingga 1 tahun</label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>2. Mengapa 1000 Hari Pertama Kehidupan disebut Periode Emas Pertumbuhan Bayi?</span>
+                    <fieldset
+                    data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w17a" name="q17" />
+                        <label for="w17a">karena masa dimana anak bertumbuh</label>
+                        <input type="radio" id="right17" name="q17"/>
+                        <label for="right17">karena masa dimana anak bertumbuh dengan sempurna<img id="j17" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w17b" name="q17"  />
+                        <label for="w17b">karena masa dimana anak bertumbuh dan berkembang</label>
+                        <input type="radio" id="w17c" name="q17"/>
+                        <label for="w17c">karena masa dimana otak bertumbuh</label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>3. Mengapa anak yang kurang gizi pada 1000 Hari Pertama Kehidupan sangat rawan dalam masa bertumbuhan?</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="right18" name="q18"/>
+                        <label for="right18">karena jika kekurangan gizi pada masa 1000 HPK maka masa selanjutnya sulit diperbaiki<img id="j18" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w18a" name="q18" />
+                        <label for="w18a">karena sulit bertumbuh pada saat masa berikutnya</label>
+                        <input type="radio" id="w18b" name="q18" />
+                        <label for="w18b">karena jika kekurangan gizi pada 1000 HPK maka masa selajutnya tidak bisa diperbaiki</label>
+                        <input type="radio" id="w18c" name="q18"  />
+                        <label for="w18c">karena sulit berkembang dan bertumbuh pada masa berikutnya</label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>4. Apa yang tidak terjadi jika bayi tidak mendapatkan cukup gizi yang dibutuhkannya di Periode Emas ini?</span>
+                    <fieldset
+                    data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w19a" name="q19" />
+                        <label for="w19a">Pertumbuhan otak terhambat</label>
+                        <input type="radio" id="w19b" name="q19" />
+                        <label for="w19b">anak menjadi pendek (stunting)</label>
+                        <input type="radio" id="right19" name="q19"/>
+                        <label for="right19">Anak menjadi bertumbuh dan berkembang<img id="j19" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w19c" name="q19"  />
+                        <label for="w19c">Anak akan sulit mengikuti pelajaran saat bersekolah</label>
+                        </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>5. Bagaimana caranya agar kebutuhan gizi bayi di 1000 Hari Pertama Kehidupan (Periode Emas) dapat dipenuhi dengan sempurna?</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w20a" name="q20" />
+                        <label for="w20a">makan makanan gizi yang seimbang</label>
+                        <input type="radio" id="w20b" name="q20" />
+                        <label for="w20b">melaksanakan iniasiasi menyusu dini (IMD)</label>
+                        <input type="radio" id="w20c" name="q20" />
+                        <label for="w20c">pemberian vitamin tambahan</label>
+                        <input type="radio" id="right20" name="q20"/>
+                        <label for="right20">makan sesuai kemauan tanpa melihat apa yang dimakan<img id="j20" class="jawaban belum"src="images/check.ico"></label>
+                    </fieldset>
+                </div>
+			</form>
+            </div>
+			<input type="button" id="submit4" value="Lihat Score" onclick="addup(16)">
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#pgQuiz3" data-transition="slidedown" data-theme="c">Kembali</a>
+                        </li>
+                        <li>
+                            <a data-role="button" href="#pgQuiz5" onclick="addup(16)" data-transition="slideup" data-theme="c"><span id="results16">Skip</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-role="page" id="pgQuiz5" style="background-image: url('images/anaksehat.jpg'); background-attachment: fixed;">
+            <div data-role="header">
+                <h1>Level 5</h1>
+            </div>
+            <div data-role="content">
+			<form name="quiz5">
+                <br><div class="div-widget">
+                    <span>1.Dibawah ini yang termasuk masalah gizi utama adalah....</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w21a" name="q21" />
+                        <label for="w21a">Malnutrisi</label>
+                        <input type="radio" id="right21" name="q21"  />
+                        <label for="right21">Kekurangan Vitamin A<img id="j21" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w21b" name="q21" />
+                        <label for="w21b">Obesitas</label>
+                        <input type="radio" id="w21c" name="q21" />
+                        <label for="w21c">Stunting</label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>2.Yang merupakan tanda-tanda marasmus, kecuali....</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w22a" name="q22" />
+                        <label for="w22a">Berat badan sangat kurang</label>
+                        <input type="radio" id="w22b" name="q22"/>
+                        <label for="w22b">Terlihat sangan kurus tinggal kulit pembungkus tulang</label>
+                        <input type="radio"id="right22" name="q22" />
+                        <label for="right22">Edema<img id="j22" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w22c" name="q22" />
+                        <label for="w22c">Muscle wasting</label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>3.Tindakan pertama yang harus dilakukan bila menemui penderita gizi buruk baik dengan
+                        komplikasi maupun tidak adalah....</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w23a" name="q23" />
+                        <label for="w23a">Rujuk segera ke UGD</label>
+                        <input type="radio" id="w23b" name="q23" />
+                        <label for="w23b">Diberikan infus NaCl atau RL</label>
+                        <input type="radio" id="w23c" name="q23"/>
+                        <label for="w23c">Diberikan transfusi darah</label>
+                        <input type="radio" id="right23" name="q23" />
+                        <label for="right23">Diberikan air gula<img id="j23" class="jawaban belum"src="images/check.ico"></label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>4. Pemberian asam folat pada ibu hamil bertujuan untuk....</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="w24a" name="q24" />
+                        <label for="w24a">Pertumbuhan tulang dan gigi</label>
+                        <input type="radio" id="w24b" name="q24"/>
+                        <label for="w24b">Membantu kesehatan mata</label>
+                        <input type="radio" id="w24c" name="q24" />
+                        <label for="w24c">Membantu produksi sel darah merah</label>
+                        <input type="radio" id="right24" name="q24" />
+                        <label for="right24">Perkembangan sistem saraf dan sel darah<img id="j24" class="jawaban belum"src="images/check.ico"></label>
+                    </fieldset>
+                </div>
+                <br><div class="div-widget">
+                    <span>5. Pada penderita kekurangan vitamin A biasanya terjadi gangguan mata yang ditandai
+                        dengan bercak bitot disebut....</span>
+                    <fieldset data-role="controlgroup">
+                        <legend></legend>
+                        <input type="radio" id="right25" name="q25"  />
+                        <label for="right25">Xeropthalmia<img id="j25" class="jawaban belum"src="images/check.ico"></label>
+                        <input type="radio" id="w25a" name="q25" />
+                        <label for="w25a">Miopi</label>
+                        <input type="radio" id="w25b" name="q25" />
+                        <label for="w25b">Rabun senja</label>
+                        <input type="radio" id="w25c" name="q25" />
+                        <label for="w25c">Rabun dekat</label>
+                    </fieldset>
+                </div>
+            </div>
+			</form>
+			<input type="button" id="submit5" value="Lihat Score" onclick="addup(21)">
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#pgQuiz4" data-transition="slidedown" data-theme="c">Kembali</a>
+                        </li>
+                        <li>
+                            <a data-role="button" href="#pgResult"  onclick="addup(21)" data-transition="slideup" data-theme="c"><span id="results21">Finish</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<audio controls loop autoplay="true" src="audio/audio.mp3">
+    </body>
+</html>
